@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Units
 {
@@ -10,7 +11,7 @@ namespace Units
         [SerializeField] private LayerMask layerMask = new LayerMask();
 
         private Camera _mainCamera;
-        private List<Unit> _selectedUnits = new();
+        public List<Unit> SelectedUnits { get; } = new();
 
         private void Start()
         {
@@ -21,12 +22,12 @@ namespace Units
         {
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                foreach (var selectedUnit in _selectedUnits)
+                foreach (var selectedUnit in SelectedUnits)
                 {
                     selectedUnit.Deselect();
                 }
                 
-                _selectedUnits.Clear();
+                SelectedUnits.Clear();
             }
             else if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
@@ -42,9 +43,9 @@ namespace Units
             if (!hit.collider.TryGetComponent<Unit>(out var unit)) return;
             if (!unit.isOwned) return;
             
-            _selectedUnits.Add(unit);
+            SelectedUnits.Add(unit);
 
-            foreach (var selectedUnit in _selectedUnits)
+            foreach (var selectedUnit in SelectedUnits)
             {
                 selectedUnit.Select();
             }

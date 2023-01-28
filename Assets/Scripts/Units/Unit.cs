@@ -1,13 +1,20 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Units
 {
     public class Unit : NetworkBehaviour
     {
+        [SerializeField] private UnitMovement unitMovement = null;
         [SerializeField] private UnityEvent onSelected = null;
         [SerializeField] private UnityEvent onDeselected = null;
+
+        public UnitMovement GetUnitMovement()
+        {
+            return unitMovement;
+        }
 
         #region Client
 
