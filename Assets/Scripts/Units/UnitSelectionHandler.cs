@@ -26,11 +26,6 @@ namespace Units
 
         private void Update()
         {
-            // if (_player == null)
-            // {
-            //     
-            // }
-            
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 StartSelectionArea();
@@ -53,12 +48,16 @@ namespace Units
 
         private void StartSelectionArea()
         {
-            foreach (var selectedUnit in SelectedUnits)
+            if (!Keyboard.current.leftShiftKey.isPressed)
             {
-                selectedUnit.Deselect();
+                foreach (var selectedUnit in SelectedUnits)
+                {
+                    selectedUnit.Deselect();
+                }
+
+                SelectedUnits.Clear();
             }
 
-            SelectedUnits.Clear();
 
             unitSelectionArea.gameObject.SetActive(true);
 
@@ -105,10 +104,12 @@ namespace Units
 
             foreach (var unit in _player.GetMyUnits())
             {
+                if (SelectedUnits.Contains(unit)) continue;
+                
                 var screenPosition = _mainCamera.WorldToScreenPoint(unit.transform.position);
 
-                if (screenPosition.x > min.x && 
-                    screenPosition.x < max.x && 
+                if (screenPosition.x > min.x &&
+                    screenPosition.x < max.x &&
                     screenPosition.y > min.y &&
                     screenPosition.y < max.y)
                 {
