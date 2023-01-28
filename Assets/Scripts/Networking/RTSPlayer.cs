@@ -2,12 +2,18 @@ using System.Collections.Generic;
 using Mirror;
 using Units;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Networking
 {
     public class RTSPlayer : NetworkBehaviour
     {
-        [SerializeField] private List<Unit> _myUnits;
+        [SerializeField] private List<Unit> myUnits;
+
+        public List<Unit> GetMyUnits()
+        {
+            return myUnits;
+        }
 
         #region Server
 
@@ -27,14 +33,14 @@ namespace Networking
         {
             if (unit.connectionToClient.connectionId != connectionToClient.connectionId) return;
 
-            _myUnits.Add(unit);
+            myUnits.Add(unit);
         }
 
         private void ServerHandleUnitDespawned(Unit unit)
         {
             if (unit.connectionToClient.connectionId != connectionToClient.connectionId) return;
 
-            _myUnits.Remove(unit);
+            myUnits.Remove(unit);
         }
 
         #endregion
@@ -61,14 +67,14 @@ namespace Networking
         {
             if (!isOwned) return;
             
-            _myUnits.Add(unit);
+            myUnits.Add(unit);
         }
 
         private void AuthorityHandleUnitDespawned(Unit unit)
         {
             if (!isOwned) return;
             
-            _myUnits.Remove(unit);
+            myUnits.Remove(unit);
         }
 
         #endregion
