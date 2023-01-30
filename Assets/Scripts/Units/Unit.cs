@@ -1,4 +1,5 @@
 using System;
+using Combat;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,6 +9,7 @@ namespace Units
     public class Unit : NetworkBehaviour
     {
         [SerializeField] private UnitMovement unitMovement = null;
+        [SerializeField] private Targeter targeter;
         [SerializeField] private UnityEvent onSelected = null;
         [SerializeField] private UnityEvent onDeselected = null;
 
@@ -19,6 +21,11 @@ namespace Units
         public UnitMovement GetUnitMovement()
         {
             return unitMovement;
+        }
+
+        public Targeter GetTargeter()
+        {
+            return targeter;
         }
         
         #region Server

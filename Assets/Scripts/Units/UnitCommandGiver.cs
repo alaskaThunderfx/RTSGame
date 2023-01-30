@@ -1,4 +1,4 @@
-using System;
+using Combat;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,14 +23,34 @@ namespace Units
             var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask)) return;
 
+            if (hit.collider.TryGetComponent<Targetable>(out var target))
+            {
+                if (target.isOwned)
+                {
+                    TryMove(hit.point);
+                    return;
+                }
+
+                TryTarget(target);
+                return;
+            }
+
             TryMove(hit.point);
         }
-
+        
         private void TryMove(Vector3 point)
         {
             foreach (var unit in unitSelectionHandler.SelectedUnits)
             {
                 unit.GetUnitMovement().CmdMove(point);
+            }
+        }
+
+        private void TryTarget(Targetable target)
+        {
+            foreach (var unit in unitSelectionHandler.SelectedUnits)
+            {
+                unit.GetTargeter().CmdSetTarget(target.gameObject);
             }
         }
     }
