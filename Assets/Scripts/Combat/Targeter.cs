@@ -5,28 +5,25 @@ namespace Combat
 {
     public class Targeter : NetworkBehaviour
     {
-        [SerializeField] private Targetable target;
+        private Targetable _target;
 
-        #region Server
+        public Targetable GetTarget()
+        {
+            return _target;
+        }
 
         [Command]
         public void CmdSetTarget(GameObject targetGameObject)
         {
             if (!targetGameObject.TryGetComponent<Targetable>(out var target)) return;
 
-            this.target = target;
+            _target = target;
         }
 
         [Server]
         public void ClearTarget()
         {
-            target = null;
+            _target = null;
         }
-
-        #endregion
-
-        #region Client
-
-        #endregion
     }
 }
