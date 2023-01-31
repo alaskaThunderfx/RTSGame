@@ -156,7 +156,7 @@ MonoBehaviour:
   unitSelectionArea: {fileID: 1503872078}
   layerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 256
 --- !u!4 &51857655
 Transform:
   m_ObjectHideFlags: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
   unitSelectionHandler: {fileID: 51857654}
   layerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1281
 --- !u!1001 &84176202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -664,8 +664,8 @@ GameObject:
   - component: {fileID: 778019137}
   - component: {fileID: 778019136}
   - component: {fileID: 778019135}
-  m_Layer: 0
-  m_Name: Ground
+  m_Layer: 10
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
