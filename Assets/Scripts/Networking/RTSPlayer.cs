@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Buildings;
 using Mirror;
 using Units;
 using UnityEngine;
@@ -10,9 +11,16 @@ namespace Networking
     {
         [SerializeField] private List<Unit> myUnits;
 
+        private List<Building> _myBuildings = new();
+
         public List<Unit> GetMyUnits()
         {
             return myUnits;
+        }
+
+        public List<Building> GetMyBuildings()
+        {
+            return _myBuildings;
         }
 
         #region Server
@@ -21,12 +29,30 @@ namespace Networking
         {
             Unit.ServerOnUnitSpawned += ServerHandleUnitSpawned;
             Unit.ServerOnUnitDespawned += ServerHandleUnitDespawned;
+            Building.ServerOnBuildingSpawned += ServerHandleBuildingSpawned;
+            Building.ServerOnBuildingDespawned += ServerHandleBuildingDespawned;
         }
 
         public override void OnStopServer()
         {
             Unit.ServerOnUnitSpawned -= ServerHandleUnitSpawned;
             Unit.ServerOnUnitDespawned -= ServerHandleUnitDespawned;
+            Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
+            Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
+        }
+
+        private void ServerHandleBuildingSpawned(Building building)
+        {
+            if (building.connectionToClient.connectionId != connectionToClient.connectionId) return;
+
+            _myBuildings.Add(building);
+        }
+
+        private void ServerHandleBuildingDespawned(Building building)
+        {
+            if (building.connectionToClient.connectionId != connectionToClient.connectionId) return;
+
+            _myBuildings.Remove(building);
         }
 
         private void ServerHandleUnitSpawned(Unit unit)
@@ -53,7 +79,10 @@ namespace Networking
 
             Unit.AuthorityOnUnitSpawned += AuthorityHandleUnitSpawned;
             Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
+            Building.AuthorityOnBuildingSpawned += AuthorityHandleBuildingSpawned;
+            Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
         }
+
 
         public override void OnStopClient()
         {
@@ -61,7 +90,10 @@ namespace Networking
 
             Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitSpawned;
             Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+            Building.AuthorityOnBuildingSpawned -= AuthorityHandleBuildingSpawned;
+            Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
         }
+
 
         private void AuthorityHandleUnitSpawned(Unit unit)
         {
@@ -71,6 +103,16 @@ namespace Networking
         private void AuthorityHandleUnitDespawned(Unit unit)
         {
             myUnits.Remove(unit);
+        }
+
+        private void AuthorityHandleBuildingSpawned(Building building)
+        {
+            _myBuildings.Add(building);
+        }
+
+        private void AuthorityHandleBuildingDespawned(Building building)
+        {
+            _myBuildings.Remove(building);
         }
 
         #endregion
