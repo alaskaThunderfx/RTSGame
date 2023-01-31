@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
@@ -22,7 +23,16 @@ namespace Units
         {
             _mainCamera = Camera.main;
             StartCoroutine(NetworkClientWaitForSeconds());
+
+            Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
         }
+
+        private void OnDestroy()
+        {
+            Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+        }
+
+        
 
         private void Update()
         {
@@ -117,6 +127,11 @@ namespace Units
                     unit.Select();
                 }
             }
+        }
+
+        private void AuthorityHandleUnitDespawned(Unit unit)
+        {
+            SelectedUnits.Remove(unit);
         }
     }
 }

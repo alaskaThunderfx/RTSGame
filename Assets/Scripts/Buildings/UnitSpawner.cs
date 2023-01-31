@@ -1,3 +1,4 @@
+using Combat;
 using Mirror;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,10 +7,27 @@ namespace Buildings
 {
     public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
     {
+        [SerializeField] private Health health;
         [SerializeField] private GameObject unitPrefab = null;
         [SerializeField] private Transform unitSpawnPoint = null;
 
         #region Server
+
+        public override void OnStartServer()
+        {
+            health.ServerOnDie += ServerHandleDie;
+        }
+
+        public override void OnStopServer()
+        {
+            health.ServerOnDie -= ServerHandleDie;
+        }
+
+        [Server]
+        private void ServerHandleDie()
+        {
+            NetworkServer.Destroy(gameObject);
+        }
 
         [Command]
         private void CmdSpawnUnit()

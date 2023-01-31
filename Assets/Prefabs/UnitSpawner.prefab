@@ -94,6 +94,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
+  health: {fileID: 1365280762388553828}
   unitPrefab: {fileID: 4249454605537300770, guid: f31d3e8dbeecf1c4cba566691a6f14bb,
     type: 3}
   unitSpawnPoint: {fileID: 3826103727063248596}
@@ -410,7 +411,7 @@ PrefabInstance:
     - target: {fileID: 8378532619077638155, guid: 764e48abdad219146aca40f8abd7ebb7,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -30,8 +30,6 @@ namespace Combat
             if (_currentHealth != 0) return;
 
             ServerOnDie?.Invoke();
-
-            Debug.Log("We died :(");
         }
 
         #endregion
