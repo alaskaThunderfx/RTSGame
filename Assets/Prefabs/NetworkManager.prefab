@@ -65,6 +65,7 @@ MonoBehaviour:
   - {fileID: 4249454605537300770, guid: f31d3e8dbeecf1c4cba566691a6f14bb, type: 3}
   - {fileID: 5022603210187128225, guid: 3804ef83ee53d0545aab38535835c982, type: 3}
   - {fileID: 6415069186739016518, guid: 8910ae37730216b4cab2e21578e4f791, type: 3}
+  - {fileID: 2022800659136627451, guid: 41a4d197cca25b943b2df62d5dfc48d6, type: 3}
   timeInterpolationGui: 0
   unitSpawnerPrefab: {fileID: 5022603210187128225, guid: 3804ef83ee53d0545aab38535835c982,
     type: 3}
