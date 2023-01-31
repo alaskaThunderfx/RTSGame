@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Buildings;
 using Mirror;
 using Networking;
 using UnityEngine;
@@ -25,15 +26,15 @@ namespace Units
             StartCoroutine(NetworkClientWaitForSeconds());
 
             Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
+            GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
         }
 
         private void OnDestroy()
         {
             Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+            GameOverHandler.ClientOnGameOver -= ClientHandleGameOver;
         }
-
         
-
         private void Update()
         {
             if (Mouse.current.leftButton.wasPressedThisFrame)
@@ -132,6 +133,11 @@ namespace Units
         private void AuthorityHandleUnitDespawned(Unit unit)
         {
             SelectedUnits.Remove(unit);
+        }
+
+        private void ClientHandleGameOver(string winnerName)
+        {
+            enabled = false;
         }
     }
 }

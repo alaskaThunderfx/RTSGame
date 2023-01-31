@@ -1,4 +1,5 @@
 using System;
+using Buildings;
 using Mirror;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ namespace Combat
     {
         [SerializeField] private int maxHealth = 100;
 
-        [SyncVar(hook = nameof(HandleHealthUpdated))] private int _currentHealth;
+        [SyncVar(hook = nameof(HandleHealthUpdated))]
+        private int _currentHealth;
 
         public event Action ServerOnDie;
         public event Action<int, int> ClientOnHealthUpdated;
@@ -18,6 +20,21 @@ namespace Combat
         public override void OnStartServer()
         {
             _currentHealth = maxHealth;
+
+            UnitBase.ServerOnPlayerDie += ServerHandlePlayerDie;
+        }
+
+        public override void OnStopServer()
+        {
+            UnitBase.ServerOnPlayerDie -= ServerHandlePlayerDie;
+        }
+
+        [Server]
+        private void ServerHandlePlayerDie(int connectionId)
+        {
+            if (connectionToClient.connectionId != connectionId) return;
+            
+            DealDamage(_currentHealth);
         }
 
         [Server]

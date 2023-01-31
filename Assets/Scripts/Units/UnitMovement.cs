@@ -1,3 +1,4 @@
+using Buildings;
 using Combat;
 using Mirror;
 using UnityEngine;
@@ -12,6 +13,16 @@ namespace Units
         [SerializeField] private float chaseRange = 10;
 
         #region Server
+
+        public override void OnStartServer()
+        {
+            GameOverHandler.ServerOnGameOver += ServerHandleGameOver;
+        }
+
+        public override void OnStopServer()
+        {
+            GameOverHandler.ServerOnGameOver -= ServerHandleGameOver;
+        }
 
         [ServerCallback]
         private void Update()
@@ -46,6 +57,12 @@ namespace Units
             if (!NavMesh.SamplePosition(position, out var hit, 1, NavMesh.AllAreas)) return;
 
             agent.SetDestination(hit.position);
+        }
+        
+        [Server]
+        private void ServerHandleGameOver()
+        {
+            agent.ResetPath();
         }
 
         #endregion

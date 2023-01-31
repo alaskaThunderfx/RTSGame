@@ -1,3 +1,4 @@
+using Buildings;
 using Mirror;
 using UnityEngine;
 
@@ -12,6 +13,17 @@ namespace Combat
             return _target;
         }
 
+        public override void OnStartServer()
+        {
+            GameOverHandler.ServerOnGameOver += ServerHandleGameOver;
+        }
+
+        public override void OnStopServer()
+        {
+            GameOverHandler.ServerOnGameOver -= ServerHandleGameOver;
+        }
+
+
         [Command]
         public void CmdSetTarget(GameObject targetGameObject)
         {
@@ -24,6 +36,12 @@ namespace Combat
         public void ClearTarget()
         {
             _target = null;
+        }
+
+        [Server]
+        private void ServerHandleGameOver()
+        {
+            ClearTarget();
         }
     }
 }

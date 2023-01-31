@@ -9,6 +9,7 @@ namespace Buildings
     {
         [SerializeField] private Health health;
 
+        public static event Action<int> ServerOnPlayerDie;
         public static event Action<UnitBase> ServerOnBaseSpawned; 
         public static event Action<UnitBase> ServerOnBaseDespawned; 
 
@@ -30,6 +31,8 @@ namespace Buildings
 
         private void ServerHandleDie()
         {
+            ServerOnPlayerDie?.Invoke(connectionToClient.connectionId);
+            
             NetworkServer.Destroy(gameObject);
         }
 
