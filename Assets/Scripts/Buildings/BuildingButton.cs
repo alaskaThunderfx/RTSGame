@@ -1,4 +1,3 @@
-using Buildings;
 using Mirror;
 using Networking;
 using TMPro;
@@ -7,73 +6,76 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+namespace Buildings
 {
-    [SerializeField] private Building building;
-    [SerializeField] private Image iconImage;
-    [SerializeField] private TMP_Text priceText;
-    [SerializeField] private LayerMask floorMask;
-
-    private Camera _mainCamera;
-    private RTSPlayer _player;
-    private GameObject _buildingPreviewInstance;
-    private Renderer _buildingRendererInstance;
-
-    private void Start()
+    public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        _mainCamera = Camera.main;
+        [SerializeField] private Building building;
+        [SerializeField] private Image iconImage;
+        [SerializeField] private TMP_Text priceText;
+        [SerializeField] private LayerMask floorMask;
 
-        iconImage.sprite = building.GetIcon();
-        priceText.text = building.GetPrice().ToString();
-    }
+        private Camera _mainCamera;
+        private RTSPlayer _player;
+        private GameObject _buildingPreviewInstance;
+        private Renderer _buildingRendererInstance;
 
-    private void Update()
-    {
-        if (_player == null)
+        private void Start()
         {
-            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            _mainCamera = Camera.main;
+
+            iconImage.sprite = building.GetIcon();
+            priceText.text = building.GetPrice().ToString();
         }
 
-        if (_buildingPreviewInstance == null) return;
-        
-        UpdateBuildingPreview();
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (eventData.button != PointerEventData.InputButton.Left) return;
-
-        _buildingPreviewInstance = Instantiate(building.GetBuildingPreview());
-        _buildingRendererInstance = _buildingPreviewInstance.GetComponentInChildren<Renderer>();
-        
-        _buildingPreviewInstance.SetActive(false);
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if (_buildingPreviewInstance == null) return;
-
-        var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, floorMask))
+        private void Update()
         {
-            // place building
+            if (_player == null)
+            {
+                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            }
+
+            if (_buildingPreviewInstance == null) return;
+        
+            UpdateBuildingPreview();
         }
-        
-        Destroy(_buildingPreviewInstance);
-    }
 
-    public void UpdateBuildingPreview()
-    {
-        var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-        if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, floorMask)) return;
-
-        _buildingPreviewInstance.transform.position = hit.point;
-
-        if (!_buildingPreviewInstance.activeSelf)
+        public void OnPointerDown(PointerEventData eventData)
         {
-            _buildingPreviewInstance.SetActive(true);
+            if (eventData.button != PointerEventData.InputButton.Left) return;
+
+            _buildingPreviewInstance = Instantiate(building.GetBuildingPreview());
+            _buildingRendererInstance = _buildingPreviewInstance.GetComponentInChildren<Renderer>();
+        
+            _buildingPreviewInstance.SetActive(false);
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            if (_buildingPreviewInstance == null) return;
+
+            var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, floorMask))
+            {
+                _player.CmdTryPlaceBuilding(building.GetId(), hit.point);
+            }
+        
+            Destroy(_buildingPreviewInstance);
+        }
+
+        public void UpdateBuildingPreview()
+        {
+            var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+            if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, floorMask)) return;
+
+            _buildingPreviewInstance.transform.position = hit.point;
+
+            if (!_buildingPreviewInstance.activeSelf)
+            {
+                _buildingPreviewInstance.SetActive(true);
+            }
         }
     }
 }

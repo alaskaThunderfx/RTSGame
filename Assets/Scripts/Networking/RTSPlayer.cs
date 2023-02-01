@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Buildings;
 using Mirror;
@@ -9,8 +10,9 @@ namespace Networking
 {
     public class RTSPlayer : NetworkBehaviour
     {
-        [SerializeField] private List<Unit> myUnits;
-
+        [SerializeField] private Building[] buildings = Array.Empty<Building>();
+        
+        private List<Unit> myUnits;
         private List<Building> _myBuildings = new();
 
         public List<Unit> GetMyUnits()
@@ -39,6 +41,28 @@ namespace Networking
             Unit.ServerOnUnitDespawned -= ServerHandleUnitDespawned;
             Building.ServerOnBuildingSpawned -= ServerHandleBuildingSpawned;
             Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
+        }
+
+        [Command]
+        public void CmdTryPlaceBuilding(int buildingId, Vector3 point)
+        {
+            Building buildingToPlace = null;
+
+            foreach (var building in buildings)
+            {
+                if (building.GetId() == buildingId)
+                {
+                    buildingToPlace = building;
+                    break;
+                }
+            }
+
+            if (buildingToPlace == null) return;
+
+            var buildingInstance = 
+                Instantiate(buildingToPlace.gameObject, point, buildingToPlace.transform.rotation);
+            
+            NetworkServer.Spawn(buildingInstance, connectionToClient);
         }
 
         private void ServerHandleBuildingSpawned(Building building)
