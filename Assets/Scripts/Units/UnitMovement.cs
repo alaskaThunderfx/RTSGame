@@ -28,7 +28,7 @@ namespace Units
         private void Update()
         {
             var target = targeter.GetTarget();
-            
+
             if (target != null)
             {
                 if ((target.transform.position - transform.position).sqrMagnitude > chaseRange * chaseRange)
@@ -52,13 +52,19 @@ namespace Units
         [Command]
         public void CmdMove(Vector3 position)
         {
+            ServerMove(position);
+        }
+
+        [Server]
+        public void ServerMove(Vector3 position)
+        {
             targeter.ClearTarget();
 
             if (!NavMesh.SamplePosition(position, out var hit, 1, NavMesh.AllAreas)) return;
 
             agent.SetDestination(hit.position);
         }
-        
+
         [Server]
         private void ServerHandleGameOver()
         {
