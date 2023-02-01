@@ -113,6 +113,7 @@ namespace Units
             var min = unitSelectionArea.anchoredPosition - unitSelectionArea.sizeDelta / 2;
             var max = unitSelectionArea.anchoredPosition + unitSelectionArea.sizeDelta / 2;
 
+            
             foreach (var unit in _player.GetMyUnits())
             {
                 if (SelectedUnits.Contains(unit)) continue;

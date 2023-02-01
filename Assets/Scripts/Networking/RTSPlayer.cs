@@ -2,27 +2,42 @@ using System;
 using System.Collections.Generic;
 using Buildings;
 using Mirror;
-using Units;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Unit = Units.Unit;
 
 namespace Networking
 {
     public class RTSPlayer : NetworkBehaviour
     {
-        [SerializeField] private Building[] buildings = Array.Empty<Building>();
-        
-        private List<Unit> myUnits;
+        [SerializeField] private Building[] buildings = new Building[0];
+
+        [SyncVar(hook = nameof(ClientHandleResourcesUpdated))]
+        private int _resources = 500;
+
+        public event Action<int> ClientOnResourcesUpdated;
+
+        private List<Unit> _myUnits = new();
         private List<Building> _myBuildings = new();
+
+        public int GetResources()
+        {
+            return _resources;
+        }
 
         public List<Unit> GetMyUnits()
         {
-            return myUnits;
+            return _myUnits;
         }
 
         public List<Building> GetMyBuildings()
         {
             return _myBuildings;
+        }
+
+        [Server]
+        public void SetResources(int newResources)
+        {
+            _resources = newResources;
         }
 
         #region Server
@@ -59,9 +74,9 @@ namespace Networking
 
             if (buildingToPlace == null) return;
 
-            var buildingInstance = 
+            var buildingInstance =
                 Instantiate(buildingToPlace.gameObject, point, buildingToPlace.transform.rotation);
-            
+
             NetworkServer.Spawn(buildingInstance, connectionToClient);
         }
 
@@ -83,14 +98,14 @@ namespace Networking
         {
             if (unit.connectionToClient.connectionId != connectionToClient.connectionId) return;
 
-            myUnits.Add(unit);
+            _myUnits.Add(unit);
         }
 
         private void ServerHandleUnitDespawned(Unit unit)
         {
             if (unit.connectionToClient.connectionId != connectionToClient.connectionId) return;
 
-            myUnits.Remove(unit);
+            _myUnits.Remove(unit);
         }
 
         #endregion
@@ -118,15 +133,19 @@ namespace Networking
             Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
         }
 
+        private void ClientHandleResourcesUpdated(int oldResources, int newResources)
+        {
+            ClientOnResourcesUpdated?.Invoke(newResources);
+        }
 
         private void AuthorityHandleUnitSpawned(Unit unit)
         {
-            myUnits.Add(unit);
+            _myUnits.Add(unit);
         }
 
         private void AuthorityHandleUnitDespawned(Unit unit)
         {
-            myUnits.Remove(unit);
+            _myUnits.Remove(unit);
         }
 
         private void AuthorityHandleBuildingSpawned(Building building)

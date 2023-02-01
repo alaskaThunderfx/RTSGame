@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3748210227202036988
 MonoBehaviour:
@@ -67,6 +67,7 @@ MonoBehaviour:
   - {fileID: 6415069186739016518, guid: 8910ae37730216b4cab2e21578e4f791, type: 3}
   - {fileID: 2022800659136627451, guid: 41a4d197cca25b943b2df62d5dfc48d6, type: 3}
   - {fileID: 2175072739348684110, guid: 7c2b55ac330dcd44cb7d2d4f8be4b414, type: 3}
+  - {fileID: 2175072739348684110, guid: 1f88c991a775a7041bc15242c2c89dc2, type: 3}
   timeInterpolationGui: 0
   unitSpawnerPrefab: {fileID: 2175072739348684110, guid: 1ae0e1b0d6e8e57498c98555b7e79b56,
     type: 3}
