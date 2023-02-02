@@ -12,19 +12,25 @@ namespace Resources
 
         private RTSPlayer _player;
 
-        private void Start()
-        {
-            StartCoroutine(NetworkClientWaitForSeconds());
-        }
+        // private void Start()
+        // {
+        //     StartCoroutine(NetworkClientWaitForSeconds());
+        // }
 
         private void Update()
         {
-            if (_player != null)
+            if (_player == null)
             {
-                ClientHandleResourcesUpdated(_player.GetResources());
+                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+                
+                if (_player != null)
+                {
+                    ClientHandleResourcesUpdated(_player.GetResources());
 
-                _player.ClientOnResourcesUpdated += ClientHandleResourcesUpdated;
+                    _player.ClientOnResourcesUpdated += ClientHandleResourcesUpdated;
+                }
             }
+            
         }
 
         private void OnDestroy()
@@ -40,7 +46,7 @@ namespace Resources
         private IEnumerator NetworkClientWaitForSeconds()
         {
             yield return new WaitForSeconds(.5f);
-            _player = _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
         }
     }
 }

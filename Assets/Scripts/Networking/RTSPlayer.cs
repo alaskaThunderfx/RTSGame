@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Buildings;
 using Mirror;
 using UnityEngine;
-using Unit = Units.Unit;
+using Units;
 
 namespace Networking
 {
@@ -18,8 +18,14 @@ namespace Networking
 
         public event Action<int> ClientOnResourcesUpdated;
 
+        private Color _teamColor;
         private List<Unit> _myUnits = new();
         private List<Building> _myBuildings = new();
+
+        public Color GetTeamColor()
+        {
+            return _teamColor;
+        }
 
         public int GetResources()
         {
@@ -34,12 +40,6 @@ namespace Networking
         public List<Building> GetMyBuildings()
         {
             return _myBuildings;
-        }
-
-        [Server]
-        public void SetResources(int newResources)
-        {
-            _resources = newResources;
         }
 
         public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 point)
@@ -83,6 +83,18 @@ namespace Networking
             Building.ServerOnBuildingDespawned -= ServerHandleBuildingDespawned;
         }
 
+        [Server]
+        public void SetTeamColor(Color newTeamColor)
+        {
+            _teamColor = newTeamColor;
+        }
+
+        [Server]
+        public void SetResources(int newResources)
+        {
+            _resources = newResources;
+        }
+
         [Command]
         public void CmdTryPlaceBuilding(int buildingId, Vector3 point)
         {
@@ -109,7 +121,7 @@ namespace Networking
                 Instantiate(buildingToPlace.gameObject, point, buildingToPlace.transform.rotation);
 
             NetworkServer.Spawn(buildingInstance, connectionToClient);
-            
+
             SetResources(_resources - buildingToPlace.GetPrice());
         }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Combat;
 using Mirror;
@@ -16,10 +15,10 @@ namespace Buildings
         private float _timer;
         private RTSPlayer _player;
 
-        private void Start()
-        {
-            StartCoroutine(NetworkClientWaitForSeconds());
-        }
+        // private void Start()
+        // {
+        //     StartCoroutine(NetworkClientWaitForSeconds());
+        // }
 
         public override void OnStartServer()
         {
@@ -28,7 +27,6 @@ namespace Buildings
 
             health.ServerOnDie += ServerHandleDie;
             GameOverHandler.ServerOnGameOver += ServerHandleGameOver;
-            
         }
 
         public override void OnStopServer()
@@ -40,12 +38,17 @@ namespace Buildings
         [ServerCallback]
         private void Update()
         {
+            if (_player == null)
+            {
+                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            }
+
             _timer -= Time.deltaTime;
 
             if (_timer <= 0)
             {
                 _player.SetResources(_player.GetResources() + resourcesPreInterval);
-                
+
                 _timer += interval;
             }
         }
@@ -59,11 +62,11 @@ namespace Buildings
         {
             enabled = false;
         }
-        
+
         private IEnumerator NetworkClientWaitForSeconds()
         {
             yield return new WaitForSeconds(.5f);
-            _player = _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
         }
     }
 }

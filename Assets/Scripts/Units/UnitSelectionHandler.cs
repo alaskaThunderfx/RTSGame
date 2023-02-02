@@ -23,7 +23,7 @@ namespace Units
         private void Start()
         {
             _mainCamera = Camera.main;
-            StartCoroutine(NetworkClientWaitForSeconds());
+            // StartCoroutine(NetworkClientWaitForSeconds());
 
             Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
             GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
@@ -34,9 +34,14 @@ namespace Units
             Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
             GameOverHandler.ClientOnGameOver -= ClientHandleGameOver;
         }
-        
+
         private void Update()
         {
+            if (_player == null)
+            {
+                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            }
+
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 StartSelectionArea();
@@ -54,7 +59,7 @@ namespace Units
         private IEnumerator NetworkClientWaitForSeconds()
         {
             yield return new WaitForSeconds(.5f);
-            _player = _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
         }
 
         private void StartSelectionArea()
@@ -113,11 +118,11 @@ namespace Units
             var min = unitSelectionArea.anchoredPosition - unitSelectionArea.sizeDelta / 2;
             var max = unitSelectionArea.anchoredPosition + unitSelectionArea.sizeDelta / 2;
 
-            
+
             foreach (var unit in _player.GetMyUnits())
             {
                 if (SelectedUnits.Contains(unit)) continue;
-                
+
                 var screenPosition = _mainCamera.WorldToScreenPoint(unit.transform.position);
 
                 if (screenPosition.x > min.x &&

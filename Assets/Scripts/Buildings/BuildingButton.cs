@@ -24,7 +24,7 @@ namespace Buildings
 
         private void Start()
         {
-            StartCoroutine(NetworkClientWaitForSeconds());
+            // StartCoroutine(NetworkClientWaitForSeconds());
             _mainCamera = Camera.main;
 
             iconImage.sprite = building.GetIcon();
@@ -35,6 +35,11 @@ namespace Buildings
 
         private void Update()
         {
+            if (_player == null)
+            {
+                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            }
+
             if (_buildingPreviewInstance == null) return;
         
             UpdateBuildingPreview();
@@ -87,7 +92,7 @@ namespace Buildings
         private IEnumerator NetworkClientWaitForSeconds()
         {
             yield return new WaitForSeconds(.5f);
-            _player = _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
         }
     }
 }
