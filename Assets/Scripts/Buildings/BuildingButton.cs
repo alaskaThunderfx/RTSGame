@@ -17,6 +17,7 @@ namespace Buildings
         [SerializeField] private LayerMask floorMask;
 
         private Camera _mainCamera;
+        private BoxCollider _buildingCollider;
         private RTSPlayer _player;
         private GameObject _buildingPreviewInstance;
         private Renderer _buildingRendererInstance;
@@ -28,12 +29,8 @@ namespace Buildings
 
             iconImage.sprite = building.GetIcon();
             priceText.text = building.GetPrice().ToString();
-        }
 
-        private IEnumerator NetworkClientWaitForSeconds()
-        {
-            yield return new WaitForSeconds(.5f);
-            _player = _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            _buildingCollider = building.GetComponent<BoxCollider>();
         }
 
         private void Update()
@@ -46,6 +43,8 @@ namespace Buildings
         public void OnPointerDown(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left) return;
+
+            if (_player.GetResources() < building.GetPrice()) return;
 
             _buildingPreviewInstance = Instantiate(building.GetBuildingPreview());
             _buildingRendererInstance = _buildingPreviewInstance.GetComponentInChildren<Renderer>();
@@ -79,6 +78,16 @@ namespace Buildings
             {
                 _buildingPreviewInstance.SetActive(true);
             }
+
+            var color = _player.CanPlaceBuilding(_buildingCollider, hit.point) ? Color.green : Color.red;
+            
+            _buildingRendererInstance.material.SetColor("_BaseColor", color);
+        }
+
+        private IEnumerator NetworkClientWaitForSeconds()
+        {
+            yield return new WaitForSeconds(.5f);
+            _player = _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
         }
     }
 }

@@ -9,7 +9,9 @@ namespace Networking
 {
     public class RTSPlayer : NetworkBehaviour
     {
+        [SerializeField] private LayerMask buildingBlockLayer;
         [SerializeField] private Building[] buildings = new Building[0];
+        [SerializeField] private float buildingRangeLimit = 5;
 
         [SyncVar(hook = nameof(ClientHandleResourcesUpdated))]
         private int _resources = 500;
@@ -38,6 +40,29 @@ namespace Networking
         public void SetResources(int newResources)
         {
             _resources = newResources;
+        }
+
+        public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 point)
+        {
+            if (Physics.CheckBox(
+                    point + buildingCollider.center,
+                    buildingCollider.size / 2,
+                    Quaternion.identity,
+                    buildingBlockLayer))
+            {
+                return false;
+            }
+
+            foreach (var building in _myBuildings)
+            {
+                if ((point - building.transform.position).sqrMagnitude
+                    <= buildingRangeLimit * buildingRangeLimit)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #region Server
@@ -74,10 +99,18 @@ namespace Networking
 
             if (buildingToPlace == null) return;
 
+            if (_resources < buildingToPlace.GetPrice()) return;
+
+            var buildingCollider = buildingToPlace.GetComponent<BoxCollider>();
+
+            if (!CanPlaceBuilding(buildingCollider, point)) return;
+
             var buildingInstance =
                 Instantiate(buildingToPlace.gameObject, point, buildingToPlace.transform.rotation);
 
             NetworkServer.Spawn(buildingInstance, connectionToClient);
+            
+            SetResources(_resources - buildingToPlace.GetPrice());
         }
 
         private void ServerHandleBuildingSpawned(Building building)
