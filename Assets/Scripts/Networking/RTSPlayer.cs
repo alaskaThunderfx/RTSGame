@@ -9,6 +9,7 @@ namespace Networking
 {
     public class RTSPlayer : NetworkBehaviour
     {
+        [SerializeField] private Transform cameraTransform;
         [SerializeField] private LayerMask buildingBlockLayer;
         [SerializeField] private Building[] buildings = new Building[0];
         [SerializeField] private float buildingRangeLimit = 5;
@@ -21,6 +22,11 @@ namespace Networking
         private Color _teamColor;
         private List<Unit> _myUnits = new();
         private List<Building> _myBuildings = new();
+
+        public Transform GetCameraTransform()
+        {
+            return cameraTransform;
+        }
 
         public Color GetTeamColor()
         {
