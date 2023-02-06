@@ -12,16 +12,16 @@ namespace Resources
 
         private RTSPlayer _player;
 
-        // private void Start()
-        // {
-        //     StartCoroutine(NetworkClientWaitForSeconds());
-        // }
+        private void Start()
+        {
+            StartCoroutine(NetworkClientWaitForSeconds());
+        }
 
         private void Update()
         {
-            if (_player == null)
-            {
-                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            // if (_player == null)
+            // {
+            //     _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
                 
                 if (_player != null)
                 {
@@ -29,7 +29,7 @@ namespace Resources
 
                     _player.ClientOnResourcesUpdated += ClientHandleResourcesUpdated;
                 }
-            }
+            // }
             
         }
 

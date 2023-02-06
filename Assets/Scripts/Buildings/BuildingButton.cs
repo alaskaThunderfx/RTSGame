@@ -24,20 +24,22 @@ namespace Buildings
 
         private void Start()
         {
-            // StartCoroutine(NetworkClientWaitForSeconds());
             _mainCamera = Camera.main;
 
             iconImage.sprite = building.GetIcon();
             priceText.text = building.GetPrice().ToString();
 
             _buildingCollider = building.GetComponent<BoxCollider>();
+            
+            // StartCoroutine(NetworkClientWaitForSeconds());
         }
 
         private void Update()
         {
             if (_player == null)
             {
-                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+                // _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+                StartCoroutine(NetworkClientWaitForSeconds());
             }
 
             if (_buildingPreviewInstance == null) return;
@@ -74,7 +76,7 @@ namespace Buildings
         public void UpdateBuildingPreview()
         {
             var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
+            
             if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, floorMask)) return;
 
             _buildingPreviewInstance.transform.position = hit.point;

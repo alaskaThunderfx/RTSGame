@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Mirror;
 using Networking;
 using UnityEngine;
@@ -15,14 +17,19 @@ namespace Cameras
 
         private Transform _playerCameraTransform;
 
+        private void Start()
+        {
+            StartCoroutine(NetworkClientWaitForSeconds());
+        }
+
         private void Update()
         {
             if (_playerCameraTransform != null) return;
 
-            if (NetworkClient.connection.identity == null) return;
-
-            _playerCameraTransform = NetworkClient.connection.identity
-                .GetComponent<RTSPlayer>().GetCameraTransform();
+            // if (NetworkClient.connection.identity == null) return;
+            //
+            // _playerCameraTransform = NetworkClient.connection.identity
+            //     .GetComponent<RTSPlayer>().GetCameraTransform();
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -60,6 +67,10 @@ namespace Cameras
             _playerCameraTransform.position = newCameraPos + new Vector3(0, 0, offset);
         }
 
-        
+        private IEnumerator NetworkClientWaitForSeconds()
+        {
+            yield return new WaitForSeconds(.5f);
+            _playerCameraTransform = NetworkClient.connection.identity.GetComponent<RTSPlayer>().GetCameraTransform();
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace Units
         private void Start()
         {
             _mainCamera = Camera.main;
-            // StartCoroutine(NetworkClientWaitForSeconds());
+            StartCoroutine(NetworkClientWaitForSeconds());
 
             Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
             GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
@@ -37,10 +37,10 @@ namespace Units
 
         private void Update()
         {
-            if (_player == null)
-            {
-                _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-            }
+            // if (_player == null)
+            // {
+            //     _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            // }
 
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
