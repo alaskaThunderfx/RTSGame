@@ -17,12 +17,22 @@ namespace Networking
         [SyncVar(hook = nameof(ClientHandleResourcesUpdated))]
         private int _resources = 500;
 
+        [SyncVar(hook = nameof(AuthorityHandlePartyOwnerStateUpdated))]
+        private bool _isPartyOwner = false;
+
         public event Action<int> ClientOnResourcesUpdated;
+
+        public static event Action<bool> AuthorityOnPartyOwnerStateUpdate;
 
         private Color _teamColor;
         private List<Unit> _myUnits = new();
         private List<Building> _myBuildings = new();
 
+        public bool GetIsPartyOwner()
+        {
+            return _isPartyOwner;
+        }
+        
         public Transform GetCameraTransform()
         {
             return cameraTransform;
@@ -90,6 +100,12 @@ namespace Networking
         }
 
         [Server]
+        public void SetPartyOwner(bool state)
+        {
+            _isPartyOwner = state;
+        }
+
+        [Server]
         public void SetTeamColor(Color newTeamColor)
         {
             _teamColor = newTeamColor;
@@ -99,6 +115,14 @@ namespace Networking
         public void SetResources(int newResources)
         {
             _resources = newResources;
+        }
+
+        [Command]
+        public void CmdStartGame()
+        {
+            if (!_isPartyOwner) return;
+            
+            ((RTSNetworkManager)NetworkManager.singleton).StartGame();
         }
 
         [Command]
@@ -174,9 +198,20 @@ namespace Networking
         }
 
 
+        public override void OnStartClient()
+        {
+            if (NetworkServer.active) return;
+            
+            ((RTSNetworkManager)NetworkManager.singleton).Players.Add(this);
+        }
+
         public override void OnStopClient()
         {
-            if (!isClientOnly || !isOwned) return;
+            if (!isClientOnly) return;
+            
+            ((RTSNetworkManager)NetworkManager.singleton).Players.Remove(this);
+
+            if (!isOwned) return;
 
             Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitSpawned;
             Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
@@ -187,6 +222,13 @@ namespace Networking
         private void ClientHandleResourcesUpdated(int oldResources, int newResources)
         {
             ClientOnResourcesUpdated?.Invoke(newResources);
+        }
+
+        private void AuthorityHandlePartyOwnerStateUpdated(bool oldState, bool newState)
+        {
+            if (!isOwned) return;
+
+            AuthorityOnPartyOwnerStateUpdate?.Invoke(newState);
         }
 
         private void AuthorityHandleUnitSpawned(Unit unit)
