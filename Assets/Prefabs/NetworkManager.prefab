@@ -62,12 +62,18 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
-  - {fileID: 4249454605537300770, guid: f31d3e8dbeecf1c4cba566691a6f14bb, type: 3}
   - {fileID: 2175072739348684110, guid: 1ae0e1b0d6e8e57498c98555b7e79b56, type: 3}
-  - {fileID: 6415069186739016518, guid: 8910ae37730216b4cab2e21578e4f791, type: 3}
   - {fileID: 2022800659136627451, guid: 41a4d197cca25b943b2df62d5dfc48d6, type: 3}
-  - {fileID: 2175072739348684110, guid: 7c2b55ac330dcd44cb7d2d4f8be4b414, type: 3}
   - {fileID: 2175072739348684110, guid: 1f88c991a775a7041bc15242c2c89dc2, type: 3}
+  - {fileID: 6058212556566147701, guid: 505518c03d0b7104faff0a335cb67567, type: 3}
+  - {fileID: 6551589714067510316, guid: 3780fb194ecf44b4697211f369d00707, type: 3}
+  - {fileID: 370608868439604425, guid: 64bc3200280b83448adcc2364b4c2499, type: 3}
+  - {fileID: 6058212556566147701, guid: 318cc60a8a41ffc469c753bbda00746a, type: 3}
+  - {fileID: 3178479464183609072, guid: babce50236b67f0488d368d1ada6ebbb, type: 3}
+  - {fileID: 370608868439604425, guid: bba0ca13d5e13c94dadae244657d082c, type: 3}
+  - {fileID: 6058212556566147701, guid: fe12639c631c2ec47865b104ae23f9ab, type: 3}
+  - {fileID: 3178479464183609072, guid: ad329c607f6f6b640945e3fcab11fcb1, type: 3}
+  - {fileID: 370608868439604425, guid: ddc3b0603d1bcf140896c3de2da45c3a, type: 3}
   timeInterpolationGui: 0
   unitSpawnerPrefab: {fileID: 2175072739348684110, guid: 1ae0e1b0d6e8e57498c98555b7e79b56,
     type: 3}

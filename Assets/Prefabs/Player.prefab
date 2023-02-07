@@ -60,7 +60,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4082983877366331286
 Transform:
   m_ObjectHideFlags: 0
@@ -69,7 +69,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610036521092493502}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 10, z: -8.4375}
+  m_LocalPosition: {x: 0, y: 17, z: -15.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -188,8 +188,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 321
   buildings:
-  - {fileID: 104127605803729853, guid: 7c2b55ac330dcd44cb7d2d4f8be4b414, type: 3}
+  - {fileID: 1907886243091210810, guid: 64bc3200280b83448adcc2364b4c2499, type: 3}
   - {fileID: 104127605803729853, guid: 1f88c991a775a7041bc15242c2c89dc2, type: 3}
+  - {fileID: 1907886243091210810, guid: bba0ca13d5e13c94dadae244657d082c, type: 3}
+  - {fileID: 1907886243091210810, guid: ddc3b0603d1bcf140896c3de2da45c3a, type: 3}
   buildingRangeLimit: 5
 --- !u!114 &6608891467256516835
 MonoBehaviour:
