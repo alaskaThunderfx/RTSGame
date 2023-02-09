@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3748210227202036988
 MonoBehaviour:
@@ -74,7 +74,7 @@ MonoBehaviour:
   - {fileID: 3178479464183609072, guid: ad329c607f6f6b640945e3fcab11fcb1, type: 3}
   - {fileID: 370608868439604425, guid: ddc3b0603d1bcf140896c3de2da45c3a, type: 3}
   timeInterpolationGui: 0
-  unitSpawnerPrefab: {fileID: 2175072739348684110, guid: 1ae0e1b0d6e8e57498c98555b7e79b56,
+  unitBasePrefab: {fileID: 2175072739348684110, guid: 1ae0e1b0d6e8e57498c98555b7e79b56,
     type: 3}
   gameOverHandlerPrefab: {fileID: 5593933101852037156, guid: 41a4d197cca25b943b2df62d5dfc48d6,
     type: 3}

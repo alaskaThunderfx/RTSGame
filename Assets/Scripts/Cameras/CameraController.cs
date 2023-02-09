@@ -38,13 +38,12 @@ namespace Cameras
         private void UpdateCameraPosition()
         {
             var pos = playerCameraTransform.position;
-
             if (_previousInput == Vector2.zero)
             {
                 var cursorMovement = Vector3.zero;
 
                 var cursorPosition = Mouse.current.position.ReadValue();
-
+                
                 if (cursorPosition.y >= Screen.height - screenBorderThickness)
                 {
                     cursorMovement.z += 1;
@@ -74,6 +73,7 @@ namespace Cameras
             pos.z = Mathf.Clamp(pos.z, screenZLimits.x, screenZLimits.y);
 
             playerCameraTransform.position = pos;
+
         }
 
         private void SetPreviousInput(InputAction.CallbackContext ctx)
