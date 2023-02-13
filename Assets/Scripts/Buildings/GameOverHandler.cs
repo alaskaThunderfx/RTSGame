@@ -10,9 +10,9 @@ namespace Buildings
     {
         public static event Action ServerOnGameOver;
         public static event Action<string> ClientOnGameOver;
-        
+
         private List<UnitBase> _bases = new();
-        
+
         #region Server
 
         public override void OnStartServer()
@@ -32,7 +32,7 @@ namespace Buildings
         {
             _bases.Add(unitBase);
         }
-        
+
         [Server]
         private void ServerHandleBaseDespawned(UnitBase unitBase)
         {
@@ -41,9 +41,9 @@ namespace Buildings
             if (_bases.Count != 1) return;
 
             var playerId = _bases[0].connectionToClient.connectionId;
-            
+
             RpcGameOver($"Player {playerId}");
-            
+
             ServerOnGameOver?.Invoke();
         }
 
@@ -52,7 +52,6 @@ namespace Buildings
         #region Client
 
         [ClientRpc]
-
         private void RpcGameOver(string winner)
         {
             ClientOnGameOver?.Invoke(winner);

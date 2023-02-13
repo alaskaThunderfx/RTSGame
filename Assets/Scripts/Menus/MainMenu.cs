@@ -10,7 +10,7 @@ namespace Menus
         public void HostLobby()
         {
             landingPagePanel.SetActive(false);
-        
+
             NetworkManager.singleton.StartHost();
         }
     }

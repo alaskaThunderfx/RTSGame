@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Buildings;
+using Cameras;
 using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,7 @@ namespace Networking
     {
         [SerializeField] private GameObject unitBasePrefab;
         [SerializeField] private GameOverHandler gameOverHandlerPrefab;
+        [SerializeField] private float offset;
 
         public static event Action ClientOnConnected;
         public static event Action ClientOnDisconnected;
@@ -32,9 +34,9 @@ namespace Networking
         public override void OnServerDisconnect(NetworkConnectionToClient conn)
         {
             var player = conn.identity.GetComponent<RTSPlayer>();
-            
+
             Players.Remove(player);
-            
+
             base.OnServerDisconnect(conn);
         }
 
@@ -50,7 +52,7 @@ namespace Networking
             if (Players.Count < 2) return;
 
             _isGameInProgress = true;
-            
+
             ServerChangeScene("Scene_Map_01");
         }
 
@@ -59,22 +61,18 @@ namespace Networking
             base.OnServerAddPlayer(conn);
 
             var player = conn.identity.GetComponent<RTSPlayer>();
-            
+
             Players.Add(player);
-            
+
+            player.SetDisplayName($"Player {Players.Count}");
+
             player.SetTeamColor(new Color(
                 Random.Range(0f, 1f),
                 Random.Range(0f, 1f),
                 Random.Range(0f, 1f)
             ));
-            
-            player.SetPartyOwner(Players.Count == 1);
 
-            // var addedPlayerTransform = conn.identity.transform;
-            // var unitSpawnerInstance = Instantiate(unitSpawnerPrefab, addedPlayerTransform.position,
-            //     addedPlayerTransform.rotation);
-            //
-            // NetworkServer.Spawn(unitSpawnerInstance, conn);
+            player.SetPartyOwner(Players.Count == 1);
         }
 
         public override void OnServerSceneChanged(string sceneName)
@@ -88,11 +86,15 @@ namespace Networking
                 foreach (var player in Players)
                 {
                     var baseInstance = Instantiate(
-                        unitBasePrefab, 
-                        GetStartPosition().position, 
+                        unitBasePrefab,
+                        GetStartPosition().position,
                         Quaternion.identity);
-                    
+
                     NetworkServer.Spawn(baseInstance, player.connectionToClient);
+
+                    player.transform.position = baseInstance.transform.position.x > 0
+                        ? baseInstance.transform.position + new Vector3(10, 0, 0)
+                        : baseInstance.transform.position + new Vector3(-10, 0, 0);
                 }
             }
         }

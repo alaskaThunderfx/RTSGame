@@ -24,7 +24,6 @@ namespace Units
             GameOverHandler.ClientOnGameOver -= ClientHandleGameOver;
         }
 
-       
 
         private void Update()
         {
@@ -47,7 +46,7 @@ namespace Units
 
             TryMove(hit.point);
         }
-        
+
         private void TryMove(Vector3 point)
         {
             foreach (var unit in unitSelectionHandler.SelectedUnits)

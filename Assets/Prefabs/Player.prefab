@@ -60,7 +60,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4082983877366331286
 Transform:
   m_ObjectHideFlags: 0
@@ -193,6 +193,7 @@ MonoBehaviour:
   - {fileID: 1907886243091210810, guid: bba0ca13d5e13c94dadae244657d082c, type: 3}
   - {fileID: 1907886243091210810, guid: ddc3b0603d1bcf140896c3de2da45c3a, type: 3}
   buildingRangeLimit: 5
+  startingBuildingPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &6608891467256516835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,3 +214,4 @@ MonoBehaviour:
   screenBorderThickness: 10
   screenXLimits: {x: -45, y: 45}
   screenZLimits: {x: -55, y: 35}
+  offset: 17

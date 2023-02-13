@@ -35,7 +35,7 @@ namespace Menus
         private void ClientHandleGameOver(string winner)
         {
             winnerNameText.text = $"{winner} Has Won!";
-            
+
             gameOverDisplayParent.SetActive(true);
         }
     }

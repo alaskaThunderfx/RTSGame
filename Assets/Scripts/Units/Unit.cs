@@ -15,7 +15,7 @@ namespace Units
         [SerializeField] private UnityEvent onSelected = null;
         [SerializeField] private UnityEvent onDeselected = null;
 
-        public static event Action<Unit> ServerOnUnitSpawned; 
+        public static event Action<Unit> ServerOnUnitSpawned;
         public static event Action<Unit> ServerOnUnitDespawned;
         public static event Action<Unit> AuthorityOnUnitSpawned;
         public static event Action<Unit> AuthorityOnUnitDespawned;
@@ -24,7 +24,7 @@ namespace Units
         {
             return resourceCost;
         }
-        
+
         public UnitMovement GetUnitMovement()
         {
             return unitMovement;
@@ -34,7 +34,7 @@ namespace Units
         {
             return targeter;
         }
-        
+
         #region Server
 
         public override void OnStartServer()
@@ -47,7 +47,6 @@ namespace Units
         {
             health.ServerOnDie -= ServerHandleDie;
             ServerOnUnitDespawned?.Invoke(this);
-            
         }
 
         [Server]
@@ -68,7 +67,7 @@ namespace Units
         public override void OnStopClient()
         {
             if (!isOwned) return;
-            
+
             AuthorityOnUnitDespawned?.Invoke(this);
         }
 
@@ -76,7 +75,7 @@ namespace Units
         public void Select()
         {
             if (!isOwned) return;
-            
+
             onSelected?.Invoke();
         }
 
@@ -84,7 +83,7 @@ namespace Units
         public void Deselect()
         {
             if (!isOwned) return;
-            
+
             onDeselected?.Invoke();
         }
 

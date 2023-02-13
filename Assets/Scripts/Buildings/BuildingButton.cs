@@ -29,21 +29,15 @@ namespace Buildings
             iconImage.sprite = building.GetIcon();
             priceText.text = building.GetPrice().ToString();
 
+            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+
             _buildingCollider = building.GetComponent<BoxCollider>();
-            
-            // StartCoroutine(NetworkClientWaitForSeconds());
         }
 
         private void Update()
         {
-            if (_player == null)
-            {
-                // _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-                StartCoroutine(NetworkClientWaitForSeconds());
-            }
-
             if (_buildingPreviewInstance == null) return;
-        
+
             UpdateBuildingPreview();
         }
 
@@ -55,7 +49,7 @@ namespace Buildings
 
             _buildingPreviewInstance = Instantiate(building.GetBuildingPreview());
             _buildingRendererInstance = _buildingPreviewInstance.GetComponentInChildren<Renderer>();
-        
+
             _buildingPreviewInstance.SetActive(false);
         }
 
@@ -69,14 +63,14 @@ namespace Buildings
             {
                 _player.CmdTryPlaceBuilding(building.GetId(), hit.point);
             }
-        
+
             Destroy(_buildingPreviewInstance);
         }
 
         public void UpdateBuildingPreview()
         {
             var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            
+
             if (!Physics.Raycast(ray, out var hit, Mathf.Infinity, floorMask)) return;
 
             _buildingPreviewInstance.transform.position = hit.point;
@@ -87,14 +81,8 @@ namespace Buildings
             }
 
             var color = _player.CanPlaceBuilding(_buildingCollider, hit.point) ? Color.green : Color.red;
-            
-            _buildingRendererInstance.material.SetColor("_BaseColor", color);
-        }
 
-        private IEnumerator NetworkClientWaitForSeconds()
-        {
-            yield return new WaitForSeconds(.5f);
-            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            _buildingRendererInstance.material.SetColor("_BaseColor", color);
         }
     }
 }

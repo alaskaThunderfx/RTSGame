@@ -37,7 +37,7 @@ namespace Menus
         private void HandleClientConnected()
         {
             joinButton.interactable = true;
-            
+
             gameObject.SetActive(false);
             landingPagePanel.SetActive(false);
         }

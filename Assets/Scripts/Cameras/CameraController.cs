@@ -23,7 +23,7 @@ namespace Cameras
 
             _controls.Player.MoveCamera.performed += SetPreviousInput;
             _controls.Player.MoveCamera.canceled += SetPreviousInput;
-            
+
             _controls.Enable();
         }
 
@@ -43,7 +43,7 @@ namespace Cameras
                 var cursorMovement = Vector3.zero;
 
                 var cursorPosition = Mouse.current.position.ReadValue();
-                
+
                 if (cursorPosition.y >= Screen.height - screenBorderThickness)
                 {
                     cursorMovement.z += 1;
@@ -52,7 +52,7 @@ namespace Cameras
                 {
                     cursorMovement.z -= 1;
                 }
-                
+
                 if (cursorPosition.x >= Screen.width - screenBorderThickness)
                 {
                     cursorMovement.x += 1;
@@ -73,7 +73,6 @@ namespace Cameras
             pos.z = Mathf.Clamp(pos.z, screenZLimits.x, screenZLimits.y);
 
             playerCameraTransform.position = pos;
-
         }
 
         private void SetPreviousInput(InputAction.CallbackContext ctx)

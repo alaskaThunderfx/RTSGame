@@ -197,6 +197,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4470686302720173985}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &4470686302722080705 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2300000, guid: 6e4d8dfe03882c54380948659f725233,
+    type: 3}
+  m_PrefabInstance: {fileID: 4470686302720173985}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7791863579697524016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -305,6 +311,21 @@ PrefabInstance:
       propertyPath: m_Extents.z
       value: 1.544894
       objectReference: {fileID: 0}
+    - target: {fileID: 7798775789746652807, guid: d8e1e706574cf7f4597a9dd464a69f52,
+        type: 3}
+      propertyPath: colorRenderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798775789746652807, guid: d8e1e706574cf7f4597a9dd464a69f52,
+        type: 3}
+      propertyPath: colorRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 4470686302722080705}
+    - target: {fileID: 7798775789746652807, guid: d8e1e706574cf7f4597a9dd464a69f52,
+        type: 3}
+      propertyPath: colorRenderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 5192662895387363832}
     - target: {fileID: 7877830551872401037, guid: d8e1e706574cf7f4597a9dd464a69f52,
         type: 3}
       propertyPath: id

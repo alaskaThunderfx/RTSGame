@@ -41,7 +41,7 @@ namespace Cameras
         {
             MoveCamera();
         }
-        
+
         private void MoveCamera()
         {
             var mousePos = Mouse.current.position.ReadValue();

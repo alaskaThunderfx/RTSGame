@@ -23,7 +23,8 @@ namespace Units
         private void Start()
         {
             _mainCamera = Camera.main;
-            StartCoroutine(NetworkClientWaitForSeconds());
+
+            _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
 
             Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
             GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
@@ -37,11 +38,6 @@ namespace Units
 
         private void Update()
         {
-            // if (_player == null)
-            // {
-            //     _player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-            // }
-
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 StartSelectionArea();

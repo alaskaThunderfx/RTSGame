@@ -10,8 +10,8 @@ namespace Buildings
         [SerializeField] private Sprite icon;
         [SerializeField] private int id = -1;
         [SerializeField] private int price = 100;
-        
-        public static event Action<Building> ServerOnBuildingSpawned; 
+
+        public static event Action<Building> ServerOnBuildingSpawned;
         public static event Action<Building> ServerOnBuildingDespawned;
         public static event Action<Building> AuthorityOnBuildingSpawned;
         public static event Action<Building> AuthorityOnBuildingDespawned;
@@ -51,16 +51,16 @@ namespace Buildings
         #endregion
 
         #region Client
-        
+
         public override void OnStartAuthority()
         {
             AuthorityOnBuildingSpawned?.Invoke(this);
         }
-        
+
         public override void OnStopClient()
         {
             if (!isOwned) return;
-            
+
             AuthorityOnBuildingDespawned?.Invoke(this);
         }
 

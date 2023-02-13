@@ -21,7 +21,7 @@ namespace Units
         {
             var target = targeter.GetTarget();
             if (target == null) return;
-            
+
             if (!CanFireAtTarget()) return;
 
             var targetRotation =
@@ -35,20 +35,20 @@ namespace Units
 
             if (Time.time > 1 / fireRate + _lastFireTime)
             {
-                var projectileRotation = 
+                var projectileRotation =
                     Quaternion.LookRotation(
-                        target.GetAimAtPoint().position 
+                        target.GetAimAtPoint().position
                         - projectileSpawnPoint.position);
-                
-                var projectileInstance = 
+
+                var projectileInstance =
                     Instantiate(
-                        projectilePrefab, 
+                        projectilePrefab,
                         projectileSpawnPoint.position,
                         projectileRotation);
-                
+
                 NetworkServer.Spawn(projectileInstance, connectionToClient);
 
-                    _lastFireTime = Time.time;
+                _lastFireTime = Time.time;
             }
         }
 

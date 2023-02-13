@@ -33,7 +33,7 @@ namespace Combat
         private void ServerHandlePlayerDie(int connectionId)
         {
             if (connectionToClient.connectionId != connectionId) return;
-            
+
             DealDamage(_currentHealth);
         }
 
