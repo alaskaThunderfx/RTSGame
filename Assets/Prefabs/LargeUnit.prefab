@@ -323,6 +323,11 @@ PrefabInstance:
       propertyPath: _assetId
       value: 2141079126
       objectReference: {fileID: 0}
+    - target: {fileID: 7304521391794885739, guid: f31d3e8dbeecf1c4cba566691a6f14bb,
+        type: 3}
+      propertyPath: chaseRange
+      value: 14.8
+      objectReference: {fileID: 0}
     - target: {fileID: 8126492043024401008, guid: f31d3e8dbeecf1c4cba566691a6f14bb,
         type: 3}
       propertyPath: maxHealth

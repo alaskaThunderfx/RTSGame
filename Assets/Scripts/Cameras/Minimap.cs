@@ -26,10 +26,10 @@ namespace Cameras
         {
             if (_playerCameraTransform != null) return;
 
-            // if (NetworkClient.connection.identity == null) return;
-            //
-            // _playerCameraTransform = NetworkClient.connection.identity
-            //     .GetComponent<RTSPlayer>().GetCameraTransform();
+            if (NetworkClient.connection?.identity == null) return;
+            
+            _playerCameraTransform = NetworkClient.connection.identity
+                .GetComponent<RTSPlayer>().GetCameraTransform();
         }
 
         public void OnPointerDown(PointerEventData eventData)

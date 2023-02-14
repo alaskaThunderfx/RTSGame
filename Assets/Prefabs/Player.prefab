@@ -192,8 +192,7 @@ MonoBehaviour:
   - {fileID: 104127605803729853, guid: 1f88c991a775a7041bc15242c2c89dc2, type: 3}
   - {fileID: 1907886243091210810, guid: bba0ca13d5e13c94dadae244657d082c, type: 3}
   - {fileID: 1907886243091210810, guid: ddc3b0603d1bcf140896c3de2da45c3a, type: 3}
-  buildingRangeLimit: 5
-  startingBuildingPosition: {x: 0, y: 0, z: 0}
+  buildingRangeLimit: 15
 --- !u!114 &6608891467256516835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,4 +213,3 @@ MonoBehaviour:
   screenBorderThickness: 10
   screenXLimits: {x: -45, y: 45}
   screenZLimits: {x: -55, y: 35}
-  offset: 17
